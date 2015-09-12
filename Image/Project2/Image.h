@@ -48,9 +48,6 @@ public:
 		}
 	}
 
-	//void setPixel(int w, int h) {
-	//	pixels
-	//}
 private:
 	int *pixels; // alternativamente char *pixels – 1 byte por canal
 				 // neste caso, pixels = new char[w*h*3];
