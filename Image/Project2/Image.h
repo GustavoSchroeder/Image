@@ -30,12 +30,29 @@ public:
 	int* getPixels() {
 		return pixels;
 	}
+	
+	void setPixels(int rgb, int* pixels){
+		//algoritmo
+	}
+	
+	void dropPixels(//ver){
+		//algoritmo
+	}
+	
+	void plot(int* foreground, int xi, int yi, int largura, int altura){
+		for(int i = 0; i<largura; i++){
+			for(int j = 0; j<altura; j++){
+				//calcular x e y
+				//pixels [xx+yy*largura] = foreground [x+y*largura];
+			}
+		}
+	}
 
 	//void setPixel(int w, int h) {
 	//	pixels
 	//}
 private:
-	int *pixels; // alternativamente char *pixels – 1 byte por canal
+	int *pixels; // alternativamente char *pixels â€“ 1 byte por canal
 				 // neste caso, pixels = new char[w*h*3];
 	int width, height;
 };
