@@ -30,18 +30,22 @@ public:
 	int* getPixels() {
 		return pixels;
 	}
-	
-	void setPixels(int rgb, int* pixels){
-		//algoritmo
+	void setPixels(int* pixelsSet, int rgb) { //verificar 
+		int size = sizeof(pixelsSet);
+		for (int i = 0; i < size; i++) {
+			pixelsSet[i];
+		}
 	}
-	
-	void dropPixels(//ver){
-		//algoritmo
+	void dropPixels(){//da uma zerada nos pixels
+			for (int i = 0; i < height; i++) {
+				for (int j = 0; j < width; j++) {
+					setPixel(0, i, j);
+				}
+			}
 	}
-	
-	void plot(int* foreground, int xi, int yi, int largura, int altura){
-		for(int i = 0; i<largura; i++){
-			for(int j = 0; j<altura; j++){
+	void plot(int* foreground, int xi, int yi, int largura, int altura) {
+		for (int i = 0; i<largura; i++) {
+			for (int j = 0; j<altura; j++) {
 				//calcular x e y
 				//pixels [xx+yy*largura] = foreground [x+y*largura];
 			}
