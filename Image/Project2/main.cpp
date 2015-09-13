@@ -11,8 +11,8 @@
 
 using namespace std;
 Image *imagem = NULL;
-int winWidth = 800;
-int winHeight = 600;
+int winWidth = 400;
+int winHeight = 400;
 
 void ChangeSize(int w, int h) {
 	// Prevent a divide by zero, when window is too short
@@ -44,7 +44,7 @@ void init(void) {
 	// Targa's are 1 byte aligned
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-	imagem = new Image(100, 100);
+	imagem = new Image(400, 400);
 	srand((unsigned int)time(NULL));
 	for (int i = 0; i < imagem->getHeight(); i++) {
 		for (int j = 0; j < imagem->getWidth(); j++) {
@@ -56,7 +56,6 @@ void init(void) {
 		}
 	}
 }
-
 
 void RenderScene(void) {
 	// Clear the window with current clearing color
@@ -73,20 +72,20 @@ void RenderScene(void) {
 	int main(int argc, char** argv) {
 		glutInit(&argc, argv);
 		glutInitDisplayMode(GLUT_RGB | GL_DOUBLE);
-		glutInitWindowSize(800, 600);
+		glutInitWindowSize(400, 400);
 		glutCreateWindow("Desenho de Imagem - Processamento Grafico");
 
-		// especifica qual a função que trata da alteração da janela
+		// especifica qual a funÃ§Ã£o que trata da alteraÃ§Ã£o da janela
 		glutReshapeFunc(ChangeSize);
 
-		// especifica qual é a função de renderização da tela
+		// especifica qual Ã© a funÃ§Ã£o de renderizaÃ§Ã£o da tela
 		glutDisplayFunc(RenderScene);
 		init();
 
 		// inicia looping do OpenGL
 		glutMainLoop();
 
-		// limpa memória ao final do looping
+		// limpa memÃ³ria ao final do looping
 //		finish();
 
 		return 0;
