@@ -14,6 +14,10 @@ Image *imagem = NULL;
 int winWidth = 400;
 int winHeight = 400;
 
+void leitura() {
+	//faz algoritmo
+}
+
 void ChangeSize(int w, int h) {
 	// Prevent a divide by zero, when window is too short
 	// (you cant make a window of zero width).
@@ -52,7 +56,7 @@ void init(void) {
 			int g = rand() % 256;
 			int b = rand() % 256;
 			int rgb = (r << 16) | (g << 8) | b; //move os bytes
-			imagem->setRGB(i, j, rgb);
+			imagem->setARGB(i, j, rgb);
 		}
 	}
 }
