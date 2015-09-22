@@ -73,24 +73,24 @@ void RenderScene(void) {
 	glutSwapBuffers();
 }
 
-	int main(int argc, char** argv) {
-		glutInit(&argc, argv);
-		glutInitDisplayMode(GLUT_RGB | GL_DOUBLE);
-		glutInitWindowSize(400, 400);
-		glutCreateWindow("Desenho de Imagem - Processamento Grafico");
+int main(int argc, char** argv) {
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_RGB | GL_DOUBLE);
+	glutInitWindowSize(400, 400);
+	glutCreateWindow("Desenho de Imagem - Processamento Grafico");
 
-		// especifica qual a função que trata da alteração da janela
-		glutReshapeFunc(ChangeSize);
+	// especifica qual a função que trata da alteração da janela
+	glutReshapeFunc(ChangeSize);
 
-		// especifica qual é a função de renderização da tela
-		glutDisplayFunc(RenderScene);
-		init();
+	// especifica qual é a função de renderização da tela
+	glutDisplayFunc(RenderScene);
+	init();
 
-		// inicia looping do OpenGL
-		glutMainLoop();
+	// inicia looping do OpenGL
+	glutMainLoop();
 
-		// limpa memória ao final do looping
-//		finish();
+	// limpa memória ao final do looping
+	//		finish();
 
-		return 0;
+	return 0;
 }
