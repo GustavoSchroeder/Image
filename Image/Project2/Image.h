@@ -74,8 +74,8 @@ public:
 	}
 	void plotInt(int* foreground, int xi, int yi, int largura, int altura) {
 -		for (int i = 0; i < largura * altura; i++) {
-			int x = i % foreground->getWidth();
-			int y = i / foreground->getWidth();
+			int x = i % largura;
+			int y = i / largura;
 			x =+ xi;
 			y =+ yi;
 +				int a = (foreground[i] >> 24) & 0xff;
