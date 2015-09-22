@@ -43,8 +43,8 @@ public:
 			int x = i % foreground->getWidth();
 			int y = i / foreground->getWidth();
 			int argb = foreground->getPixel(x, y);
-			int x =+ xi;
-			int y = +yi;
+			x =+ xi;
+			y = +yi;
 
 			int a = (argb >> 24) & 0xff;
 
