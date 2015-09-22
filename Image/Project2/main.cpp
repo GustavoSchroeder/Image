@@ -8,14 +8,46 @@
 #include <cstdio>
 #include <math.h>
 #include "Image.h"
+#include <iostream>
+#include <fstream>
+#include <string>
 
 using namespace std;
 Image *imagem = NULL;
 int winWidth = 400;
 int winHeight = 400;
 
-void leitura() {
-	//faz algoritmo
+Image leitura(string arquivo) {
+	string linha;
+	ifstream arq(arquivo);
+	if (arq.is_open())
+	{
+		arq >> linha;
+		if (arq.peek() == '#') {
+		}
+
+		int width;
+		int height;
+		arq >> width;
+		arq >> height;
+
+		Image img(width, height);
+		arq >> linha;
+
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				int a, r, g, b;
+				arq >> a >> r >> g >> b;
+				int y = height - j - 1;
+				int argb = (a << 24) | (r << 16) | (g << 8) | b;
+				img.setPixel(argb, i, y);
+			}
+		}
+		arq.close();
+		return img;
+	}
+
+	else cout << "Nao foi possivel abrir o arquivo";
 }
 
 void ChangeSize(int w, int h) {
@@ -56,7 +88,7 @@ void init(void) {
 			int g = rand() % 256;
 			int b = rand() % 256;
 			int rgb = (r << 16) | (g << 8) | b; //move os bytes
-			imagem->setARGB(i, j, rgb);
+			imagem->setPixel(rgb, i, j);
 		}
 	}
 }
@@ -67,9 +99,14 @@ void RenderScene(void) {
 	// Use Window coordinates to set raster position
 	glRasterPos2i(0, winHeight - imagem->getHeight());
 	// Draw the pixmap
-	if (imagem != NULL) {
-		glDrawPixels(imagem->getWidth(), imagem->getHeight(), GL_RGBA, GL_UNSIGNED_BYTE, imagem->getPixels());
-	}
+	//if (imagem != NULL) {
+	//	glDrawPixels(imagem->getWidth(), imagem->getHeight(), GL_RGBA, GL_UNSIGNED_BYTE, imagem->getPixels());
+	//}
+	
+	Image img = leitura("C:\\Users\\Gustavo\\Pictures\\grafico.PTM");
+	glDrawPixels(img.getWidth(), img.getHeight(), GL_BGRA_EXT, GL_UNSIGNED_BYTE, img.getPixels());
+
+	glFlush();
 	glutSwapBuffers();
 }
 
