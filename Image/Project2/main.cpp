@@ -2,7 +2,6 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
-#include <GL/glut.h>
 #include <stdlib.h>
 #include <time.h>
 #include <cstdio>
@@ -49,6 +48,15 @@ Image leitura(string arquivo) {
 
 	else cout << "Nao foi possivel abrir o arquivo";
 }
+
+void movimentaSprite(Image *imagem, int numeroImagens) {
+	for (int i = 0; i < numeroImagens; i++) {
+		glDrawPixels(imagem[i].getWidth(), imagem[i].getHeight(), GL_BGRA_EXT, GL_UNSIGNED_BYTE, imagem[i].getPixels());
+	}
+
+	glutTimerFunc(50, movimentaSprite, 1);
+}
+
 
 void ChangeSize(int w, int h) {
 	// Prevent a divide by zero, when window is too short
