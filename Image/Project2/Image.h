@@ -38,13 +38,13 @@ public:
 			}
 		}
 	}
-	void plotImage(Image *foreground, int xi, int yi) { //verificar com o professor
+	void plot(Image *foreground, int xi, int yi) { //verificar com o professor
 		for (int i = 0; i < foreground->getWidth() * foreground->getHeight(); i++) {
 			int x = i % foreground->getWidth();
 			int y = i / foreground->getWidth();
 			int argb = foreground->getPixel(x, y);
 			x =+ xi;
-			y =+ yi;
+			y = +yi;
 
 			int a = (argb >> 24) & 0xff;
 
@@ -73,38 +73,38 @@ public:
 		}
 	}
 	void plotInt(int* foreground, int xi, int yi, int largura, int altura) {
--		for (int i = 0; i < largura * altura; i++) {
+		for (int i = 0; i < largura * altura; i++) {
 			int x = i % largura;
 			int y = i / largura;
-			x =+ xi;
-			y =+ yi;
-+				int a = (foreground[i] >> 24) & 0xff;
-+				if (a == 0) {
-+					continue;
-+				}
-+				else if (a = 255) {
-+					setARGB(x, y, foreground[i]);
-+				}
-+				else {
-+					int r = (foreground[i] >> 16) & 0xff;
-+					int g = (foreground[i] >> 8) & 0xff;
-+					int b = (foreground[i]) & 0xff;
-+
-+					int aThis = (getARGB(x, y)) >> 24) & 0xff;
-+					int rThis = (getARGB(x, y)) >> 16) & 0xff;
-+					int gThis = (getARGB(x, y)) >> 8) & 0xff;
-+					int bThis = (getARGB(x, y)) & 0xff;
-+
-+					int calcr = (rThis*(1-a)+r*a);
-+					int calcg = (gThis*(1 - a) + r*a);
-+					int calcb = (bThis*(1 - a) + r*a);
-+					int argb = (255 << 24) | (calcr << 16) | (calcg << 8) | (calcb);
-+					setARGB(x, y, argb);
-+				}
- 			}
- 		}
-
-//fazer sprite
+			x = +xi;
+			y = +yi;
+			int a = (foreground[i] >> 24) & 0xff;
+			if (a == 0) {
+				continue;
+				
+			}
+			else if (a = 255) {
+				setPixel(foreground[i], x, y);
+			}
+			else {
+				int r = (foreground[i] >> 16) & 0xff;
+				int g = (foreground[i] >> 8) & 0xff;
+				int b = (foreground[i]) & 0xff;
+				
+				int aThis = (getPixel(x, y) >> 24) & 0xff;
+				int rThis = (getPixel(x, y) >> 16) & 0xff;
+				int gThis = (getPixel(x, y) >> 8) & 0xff;
+				int bThis = (getPixel(x, y)) & 0xff;
+					
+				int calcr = (rThis*(1 - a) + r*a);
+				int calcg = (gThis*(1 - a) + r*a);
+				int calcb = (bThis*(1 - a) + r*a);
+				int argb = (255 << 24) | (calcr << 16) | (calcg << 8) | (calcb);
+				setPixel(argb, x, y);
+					
+			}
+		}
+	}
 
 private:
 	int *pixels; // alternativamente char *pixels – 1 byte por canal
