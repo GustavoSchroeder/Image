@@ -1,115 +1,115 @@
-#pragma once
+#include<Windows.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/glut.h>
+#include <stdlib.h>
+#include <time.h>
+#include <cstdio>
+#include <math.h>
+#include "Image.h"
+#include <iostream>
+#include <fstream>
+#include <string>
+#include "LoaderImage.h"
 
-#ifndef IMAGE_H_INCLUDED
-#define IMAGE_H_INCLUDED
+using namespace std;
+Image *imagem = NULL;
+int winWidth = 400;
+int winHeight = 400;
 
-class Image {
-public:
-	Image(int w, int h) {
-		width = w; height = h;
-		pixels = new int[w*h];
-	}
-	~Image(void) {
-		delete[] pixels;
-	}
-	void setPixel(int argb, int x, int y) {
-		pixels[x + y*width] = argb;
-	}
-	int getPixel(int x, int y) {
-		return pixels[x + y*width];
-	}
-	int getWidth() { return width; }
-	int getHeight() { return height; }
+Image *sprite = NULL;
 
-	int* getPixels() {
-		return pixels;
+void movimentaSprite(Image *imagem, int numeroImagens) {
+	for (int i = 0; i < numeroImagens; i++) {
+		glDrawPixels(imagem[i].getWidth(), imagem[i].getHeight(), GL_BGRA_EXT, GL_UNSIGNED_BYTE, imagem[i].getPixels());
 	}
-	//	void setPixels(int* pixels) { //verificar 
-	//		for (int i = 0; i < height; i++) {
-	//			for (int j = 0; i < width; i++) {
-	//				pixels[i]->setRGB()
-	//			}
-	//		}
-	//	}
-	void dropPixels() {//da uma zerada nos pixels
-		for (int i = 0; i < height; i++) {
-			for (int j = 0; j < width; j++) {
-				setPixel(0, i, j);
-			}
+}
+
+void timer(int v) {
+	movimentaSprite(sprite, 2);
+	glutPostRedisplay();
+	glutTimerFunc(10, timer, 1);
+}
+
+
+void ChangeSize(int w, int h) {
+	// Prevent a divide by zero, when window is too short
+	// (you cant make a window of zero width).
+	if (h == 0) {
+		h = 1;
+	}
+
+	winWidth = w;
+	winHeight = h;
+
+	glViewport(0, 0, w, h);
+
+	// Reset the coordinate system before modifying
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+
+	// Set the clipping volume
+	gluOrtho2D(0.0f, (GLfloat)w, 0.0, (GLfloat)h);
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+}
+
+
+void init(void) {
+	glClearColor(0.00, 0.00, 0.00, 0.00);
+
+	// Targa's are 1 byte aligned
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+	imagem = new Image(400, 400);
+	srand((unsigned int)time(NULL));
+	for (int i = 0; i < imagem->getHeight(); i++) {
+		for (int j = 0; j < imagem->getWidth(); j++) {
+			int r = rand() % 256;
+			int g = rand() % 256;
+			int b = rand() % 256;
+			int rgb = (r << 16) | (g << 8) | b; //move os bytes
+			imagem->setPixel(rgb, i, j);
 		}
 	}
-	void plot(Image *foreground, int xi, int yi) { //verificar com o professor
-		for (int i = 0; i < foreground->getWidth() * foreground->getHeight(); i++) {
-			int x = i % foreground->getWidth();
-			int y = i / foreground->getWidth();
-			int argb = foreground->getPixel(x, y);
-			x =+ xi;
-			y = +yi;
+}
 
-			int a = (argb >> 24) & 0xff;
+void RenderScene(void) {
+	// Clear the window with current clearing color
+	glClear(GL_COLOR_BUFFER_BIT);
+	// Use Window coordinates to set raster position
+	glRasterPos2i(0, winHeight - imagem->getHeight());
+	// Draw the pixmap
+	//if (imagem != NULL) {
+	//	glDrawPixels(imagem->getWidth(), imagem->getHeight(), GL_RGBA, GL_UNSIGNED_BYTE, imagem->getPixels());
+	//}
+	sprite = LoaderImage::loadImage("Users\\Gustavo\\Pictures\\grafico.PTM");
 
-			if (a == 0) {
-				continue;
-			} 
-			else if (a == 255) {
-				this->setPixel(argb, x, y);
-			}
-			else {
-				int r = ((foreground->getPixel(x, y))>> 16) & 0xff;
-				int g = ((foreground->getPixel(x, y)) >> 8) & 0xff;
-				int b = (foreground->getPixel(x, y)) & 0xff;
+	glDrawPixels(sprite->getWidth(), sprite->getHeight(), GL_BGRA_EXT, GL_UNSIGNED_BYTE, sprite->getPixels());
 
-				int aThis = ((this->getPixel(x, y)) >> 24) & 0xff;
-				int rThis = ((this->getPixel(x, y)) >> 16) & 0xff;
-				int gThis = ((this->getPixel(x, y)) >> 8) & 0xff;
-				int bThis = (this->getPixel(x, y)) & 0xff;
+	glFlush();
+	glutSwapBuffers();
+}
 
-				int calcr = (rThis*(1 - a) + r*a);
-				int calcg = (gThis*(1 - a) + r*a);
-				int calcb = (bThis*(1 - a) + r*a);
-				int argb = (255 << 24) | (calcr << 16) | (calcg << 8) | (calcb);
-				foreground->setPixel(x, y, argb); //verificar com o professor
-			}
-		}
-	}
-	void plotInt(int* foreground, int xi, int yi, int largura, int altura) {
-		for (int i = 0; i < largura * altura; i++) {
-			int x = i % largura;
-			int y = i / largura;
-			x = +xi;
-			y = +yi;
-			int a = (foreground[i] >> 24) & 0xff;
-			if (a == 0) {
-				continue;
-				
-			}
-			else if (a = 255) {
-				setPixel(foreground[i], x, y);
-			}
-			else {
-				int r = (foreground[i] >> 16) & 0xff;
-				int g = (foreground[i] >> 8) & 0xff;
-				int b = (foreground[i]) & 0xff;
-				
-				int aThis = (getPixel(x, y) >> 24) & 0xff;
-				int rThis = (getPixel(x, y) >> 16) & 0xff;
-				int gThis = (getPixel(x, y) >> 8) & 0xff;
-				int bThis = (getPixel(x, y)) & 0xff;
-					
-				int calcr = (rThis*(1 - a) + r*a);
-				int calcg = (gThis*(1 - a) + r*a);
-				int calcb = (bThis*(1 - a) + r*a);
-				int argb = (255 << 24) | (calcr << 16) | (calcg << 8) | (calcb);
-				setPixel(argb, x, y);
-					
-			}
-		}
-	}
+int main(int argc, char** argv) {
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_RGB | GL_DOUBLE);
+	glutInitWindowSize(400, 400);
+	glutCreateWindow("Desenho de Imagem - Processamento Grafico");
 
-private:
-	int *pixels; // alternativamente char *pixels – 1 byte por canal
-				 // neste caso, pixels = new char[w*h*3];
-	int width, height;
-};
+	// especifica qual a função que trata da alteração da janela
+	glutReshapeFunc(ChangeSize);
 
-#endif
+	// especifica qual é a função de renderização da tela
+	glutDisplayFunc(RenderScene);
+	init();
+
+	// inicia looping do OpenGL
+	glutMainLoop();
+
+	// limpa memória ao final do looping
+	//		finish();
+
+	return 0;
+}
