@@ -104,6 +104,35 @@ public:
 					
 			}
 		}
+		
+		void cutPlot(int * foreground, int x, int y, int w, int h, int posX, int PosY) {
+			double fx, fy, a, r, g, b, fr, fg, fb, rr, gg, bb;
+
+			for (int i = 0; i < h*w; i++) {
+				fy = posY + y + i / w;
+				fx = posX + x + i % w;
+
+				a = (unsigned(foreground[i] >> 24)) & 0xff;
+				a = a / 255;
+				fr = (unsigned(foreground[i] >> 16)) & 0xff;
+				fg = (unsigned(foreground[i] >> 8)) & 0xff;
+				fb = (unsigned(foreground[i])) & 0xff;
+		
+				r = (getPixel(fx, fy) >> 16) & 0xff;
+				g = (getPixel(fx, fy) >> 8) & 0xff;
+				b = getPixel(fx, fy) & 0xff;
+
+				rr = r * (1 - a) + fr * a;
+				gg = g * (1 - a) + fg * a;
+				bb = b * (1 - a) + fb * a;
+
+				if (rr != 255){
+					int teste = 0;
+				}
+
+				//setPixel();
+				setPixel((getPixel(fx, fy) >> 24 & 0xff), rr, gg, bb, fx + fy*width);
+			}
 	}
 
 private:
